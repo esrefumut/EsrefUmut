@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>6. Ayımız Kutlu Olsun Sevgilim ❤️</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      background-image: url("backk.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: white;
+      font-family: "Arial", sans-serif;
+      backdrop-filter: brightness(0.6);
+    }
+
+    h1 {
+      font-size: 60px;
+      text-shadow: 0 0 10px black;
+    }
+
+    p {
+      font-size: 28px;
+      margin-top: 20px;
+      text-shadow: 0 0 5px black;
+    }
+
+    audio {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+
+ <audio id="bgm" autoplay loop muted>
+    <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+    window.addEventListener("load", () => {
+        const audio = document.getElementById("bgm");
+        setTimeout(() => {
+            audio.muted = false;
+            audio.play().catch(() => {
+                
+                document.body.addEventListener("click", () => {
+                    audio.play();
+                }, { once: true });
+            });
+        }, 1000);
+    });
+</script>
+
+  <div>
+    <h1>6. Ayımız Kutlu Olsun Sevgilim ❤️</h1>
+    <p>Seninle her gün daha güzel…</p>
+  </div>
+
+</body>
+
+
+</html>
