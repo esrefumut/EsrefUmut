@@ -86,11 +86,8 @@
     .btn-no {
       background: linear-gradient(135deg, #555, #333);
       color: white;
-    }
-
-    .btn-no:hover {
-      transform: scale(1.05);
-      background: linear-gradient(135deg, #333, #111);
+      position: relative;
+      transition: all 0.3s ease;
     }
 
     .sad-message {
@@ -179,6 +176,7 @@
     loveBtn.addEventListener("click", () => {
         audio.play();
         hearts.classList.add("active");
+        body.classList.remove("sad");
         
         // Kalpler oluştur
         for(let i = 0; i < 30; i++) {
@@ -188,12 +186,16 @@
         }
     });
 
-    noBtn.addEventListener("click", () => {
-        audio.pause();
-        audio.currentTime = 0;
-        body.classList.add("sad");
-        hearts.classList.remove("active");
-        hearts.innerHTML = "";
+    noBtn.addEventListener("mouseenter", () => {
+        const maxX = window.innerWidth - noBtn.offsetWidth - 100;
+        const maxY = window.innerHeight - noBtn.offsetHeight - 100;
+        
+        const randomX = Math.random() * maxX;
+        const randomY = Math.random() * maxY;
+        
+        noBtn.style.position = "fixed";
+        noBtn.style.left = randomX + "px";
+        noBtn.style.top = randomY + "px";
     });
 
     function createHeart() {
