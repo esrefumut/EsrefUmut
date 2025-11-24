@@ -20,53 +20,197 @@
       color: white;
       font-family: "Arial", sans-serif;
       backdrop-filter: brightness(0.6);
+      flex-direction: column;
+      transition: all 0.5s ease;
+    }
+
+    body.sad {
+      filter: grayscale(100%) brightness(0.3);
+      backdrop-filter: blur(10px);
     }
 
     h1 {
       font-size: 60px;
       text-shadow: 0 0 10px black;
+      transition: all 0.5s ease;
+    }
+
+    body.sad h1 {
+      opacity: 0.3;
+      transform: scale(0.8);
     }
 
     p {
       font-size: 28px;
       margin-top: 20px;
       text-shadow: 0 0 5px black;
+      transition: all 0.5s ease;
+    }
+
+    body.sad p {
+      opacity: 0;
     }
 
     audio {
       display: none;
+    }
+
+    .buttons {
+      margin-top: 40px;
+      display: flex;
+      gap: 20px;
+    }
+
+    .btn {
+      padding: 15px 40px;
+      font-size: 22px;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: bold;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    }
+
+    .btn-love {
+      background: linear-gradient(135deg, #ff6b9d, #c06c84);
+      color: white;
+    }
+
+    .btn-love:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 20px rgba(255, 107, 157, 0.6);
+    }
+
+    .btn-no {
+      background: linear-gradient(135deg, #555, #333);
+      color: white;
+    }
+
+    .btn-no:hover {
+      transform: scale(1.05);
+      background: linear-gradient(135deg, #333, #111);
+    }
+
+    .sad-message {
+      display: none;
+      font-size: 35px;
+      color: #666;
+      margin-top: 30px;
+      animation: fadeIn 1s ease;
+    }
+
+    body.sad .sad-message {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hearts {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    .hearts.active {
+      display: block;
+    }
+
+    .heart {
+      position: absolute;
+      font-size: 40px;
+      animation: float 4s ease-in infinite;
+      opacity: 0;
+    }
+
+    @keyframes float {
+      0% { 
+        opacity: 1;
+        transform: translateY(100vh) scale(0);
+      }
+      50% {
+        opacity: 1;
+        transform: translateY(50vh) scale(1);
+      }
+      100% { 
+        opacity: 0;
+        transform: translateY(-20vh) scale(0.5);
+      }
     }
   </style>
 </head>
 
 <body>
 
- <audio id="bgm" autoplay loop muted>
+ <audio id="bgm" loop>
     <source src="music.mp3" type="audio/mpeg">
 </audio>
 
-<script>
-    window.addEventListener("load", () => {
-        const audio = document.getElementById("bgm");
-        setTimeout(() => {
-            audio.muted = false;
-            audio.play().catch(() => {
-                
-                document.body.addEventListener("click", () => {
-                    audio.play();
-                }, { once: true });
-            });
-        }, 1000);
-    });
-</script>
+<div class="hearts" id="hearts"></div>
 
   <div>
     <h1>6. Ayımız Kutlu Olsun Sevgilim ❤️</h1>
     <p>Seninle her gün daha güzel…</p>
+    
+    <div class="buttons">
+      <button class="btn btn-love" id="loveBtn">Seni Çok Seviyorum ❤️</button>
+      <button class="btn btn-no" id="noBtn">Seni Sevmiyorum 💔</button>
+    </div>
+
+    <div class="sad-message">Kalbim kırıldı... 💔😢</div>
   </div>
 
-</body>
+<script>
+    const audio = document.getElementById("bgm");
+    const loveBtn = document.getElementById("loveBtn");
+    const noBtn = document.getElementById("noBtn");
+    const hearts = document.getElementById("hearts");
+    const body = document.body;
 
+    loveBtn.addEventListener("click", () => {
+        audio.play();
+        hearts.classList.add("active");
+        
+        // Kalpler oluştur
+        for(let i = 0; i < 30; i++) {
+            setTimeout(() => {
+                createHeart();
+            }, i * 100);
+        }
+    });
+
+    noBtn.addEventListener("click", () => {
+        audio.pause();
+        audio.currentTime = 0;
+        body.classList.add("sad");
+        hearts.classList.remove("active");
+        hearts.innerHTML = "";
+    });
+
+    function createHeart() {
+        const heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerHTML = "❤️";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.animationDelay = Math.random() * 2 + "s";
+        hearts.appendChild(heart);
+        
+        setTimeout(() => {
+            heart.remove();
+        }, 4000);
+    }
+</script>
+
+</body>
 
 
 </html>
